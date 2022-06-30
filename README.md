@@ -5,8 +5,10 @@ User can use the arrow keys present on the keyboard. In case the snake hits itse
 
 ## 📸 Screenshots
 
-![Screenshot (38)](https://user-images.githubusercontent.com/108352237/176667826-68e0f3b6-db61-4260-89a3-8817d0314b4b.png)
+![image](https://user-images.githubusercontent.com/108352237/176671168-c02b0b44-96cd-4a2f-9d7a-1849b3457626.png)
+
 ##
 
-![Screenshot (39)](https://user-images.githubusercontent.com/108352237/176668049-39f2c655-8928-49ec-84d1-4e5d2f55a50c.png)
+![image](https://user-images.githubusercontent.com/108352237/176671288-39cd1e7d-3fa6-41b4-9ef3-d017d7f05c86.png)
+
 
