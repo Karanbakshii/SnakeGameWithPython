@@ -2,7 +2,7 @@
 This is a python based Snake Game using Pygame
 
 User can use the arrow keys present on the keyboard. In case the snake hits itself or walls, the game ends.
-#
+
 ## 📸 Screenshots
 
 ![Screenshot (38)](https://user-images.githubusercontent.com/108352237/176667826-68e0f3b6-db61-4260-89a3-8817d0314b4b.png)
