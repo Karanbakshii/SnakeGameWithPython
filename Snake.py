@@ -1,127 +1,163 @@
-import pygame
+#imports
+import turtle
 import time
 import random
- 
-pygame.init()
- 
-white = (255, 255, 255)
-yellow = (255, 255, 102)
-black = (0, 0, 0)
-red = (213, 50, 80)
-green = (0, 255, 0)
-blue = (50, 153, 213)
- 
-dis_width = 600
-dis_height = 400
- 
-dis = pygame.display.set_mode((dis_width, dis_height))
-pygame.display.set_caption('Snake Game -- Karan Bakshi(21MCA2879)')
- 
-clock = pygame.time.Clock()
- 
-snake_block = 10
-snake_speed = 15
- 
-font_style = pygame.font.SysFont("bahnschrift", 25)
-score_font = pygame.font.SysFont("comicsansms", 35)
- 
- 
-def Your_score(score):
-    value = score_font.render("Your Score: " + str(score), True, yellow)
-    dis.blit(value, [0, 0])
- 
- 
- 
-def our_snake(snake_block, snake_list):
-    for x in snake_list:
-        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
- 
- 
-def message(msg, color):
-    mesg = font_style.render(msg, True, color)
-    dis.blit(mesg, [dis_width / 6, dis_height / 3])
- 
- 
-def gameLoop():
-    game_over = False
-    game_close = False
- 
-    x1 = dis_width / 2
-    y1 = dis_height / 2
- 
-    x1_change = 0
-    y1_change = 0
- 
-    snake_List = []
-    Length_of_snake = 1
- 
-    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
- 
-    while not game_over:
- 
-        while game_close == True:
-            dis.fill(blue)
-            message("You Lost! Press C-Play Again or Q-Quit", red)
-            Your_score(Length_of_snake - 1)
-            pygame.display.update()
- 
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    if event.key == pygame.K_c:
-                        gameLoop()
- 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_over = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    x1_change = -snake_block
-                    y1_change = 0
-                elif event.key == pygame.K_RIGHT:
-                    x1_change = snake_block
-                    y1_change = 0
-                elif event.key == pygame.K_UP:
-                    y1_change = -snake_block
-                    x1_change = 0
-                elif event.key == pygame.K_DOWN:
-                    y1_change = snake_block
-                    x1_change = 0
- 
-        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
-            game_close = True
-        x1 += x1_change
-        y1 += y1_change
-        dis.fill(blue)
-        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
-        snake_Head = []
-        snake_Head.append(x1)
-        snake_Head.append(y1)
-        snake_List.append(snake_Head)
-        if len(snake_List) > Length_of_snake:
-            del snake_List[0]
- 
-        for x in snake_List[:-1]:
-            if x == snake_Head:
-                game_close = True
- 
-        our_snake(snake_block, snake_List)
-        Your_score(Length_of_snake - 1)
- 
-        pygame.display.update()
- 
-        if x1 == foodx and y1 == foody:
-            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-            Length_of_snake += 1
- 
-        clock.tick(snake_speed)
- 
-    pygame.quit()
-    quit()
- 
- 
-gameLoop()
+
+delay = 0.1
+
+#scores
+score = 0
+high_score = 0
+
+#set up screen
+wn = turtle.Screen()
+wn.title("Snake Game by Karan Bakshi (21MCA2879)")
+wn.bgcolor('yellow')
+wn.setup(width=600, height=600)
+wn.tracer(0)
+
+#snake head
+head = turtle.Turtle()
+head.speed(0)
+head.shape("square")
+head.color("black")
+head.penup()
+head.goto(0,0)
+head.direction = "stop"
+
+#snake food
+food= turtle.Turtle()
+food.speed(0)
+food.shape("square")
+food.color("red")
+food.penup()
+food.goto(0,100)
+
+segments = []
+
+#scoreboards
+sc = turtle.Turtle()
+sc.speed(0)
+sc.shape("square")
+sc.color("black")
+sc.penup()
+sc.hideturtle()
+sc.goto(0,260)
+sc.write("score: 0  High score: 0", align = "center", font=("ds-digital", 24, "normal"))
+
+#Functions
+def go_up():
+    if head.direction != "down":
+        head.direction = "up"
+def go_down():
+    if head.direction != "up":
+        head.direction = "down"
+def go_left():
+    if head.direction != "right":
+        head.direction = "left"
+def go_right():
+    if head.direction != "left":
+        head.direction = "right"
+def move():
+    if head.direction == "up":
+        y = head.ycor()
+        head.sety(y+20)
+    if head.direction == "down":
+        y = head.ycor()
+        head.sety(y-20)
+    if head.direction == "left":
+        x = head.xcor()
+        head.setx(x-20)
+    if head.direction == "right":
+        x = head.xcor()
+        head.setx(x+20)
+
+#keyboard bindings
+wn.listen()
+wn.onkeypress(go_up, "w")
+wn.onkeypress(go_down, "s")
+wn.onkeypress(go_left, "a")
+wn.onkeypress(go_right, "d")
+
+#MainLoop
+while True:
+    wn.update()
+
+    #check collision with border area
+    if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
+        time.sleep(1)
+        head.goto(0,0)
+        head.direction = "stop"
+
+        #hide the segments of body
+        for segment in segments:
+            segment.goto(1000,1000) #out of range
+        #clear the segments
+        segments.clear()
+
+        #reset score
+        score = 0
+
+        #reset delay
+        delay = 0.1
+
+        sc.clear()
+        sc.write("score: {}  High score: {}".format(score, high_score), align="center", font=("ds-digital", 24, "normal"))
+
+    #check collision with food
+    if head.distance(food) <20:
+        # move the food to random place
+        x = random.randint(-290,290)
+        y = random.randint(-290,290)
+        food.goto(x,y)
+
+        #add a new segment to the head
+        new_segment = turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.shape("square")
+        new_segment.color("black")
+        new_segment.penup()
+        segments.append(new_segment)
+
+        #shorten the delay
+        delay -= 0.001
+        #increase the score
+        score += 10
+
+        if score > high_score:
+            high_score = score
+        sc.clear()
+        sc.write("score: {}  High score: {}".format(score,high_score), align="center", font=("ds-digital", 24, "normal")) 
+
+    #move the segments in reverse order
+    for index in range(len(segments)-1,0,-1):
+        x = segments[index-1].xcor()
+        y = segments[index-1].ycor()
+        segments[index].goto(x,y)
+    #move segment 0 to head
+    if len(segments)>0:
+        x = head.xcor()
+        y = head.ycor()
+        segments[0].goto(x,y)
+
+    move()
+
+    #check for collision with body
+    for segment in segments:
+        if segment.distance(head)<20:
+            time.sleep(1)
+            head.goto(0,0)
+            head.direction = "stop"
+
+            #hide segments
+            for segment in segments:
+                segment.goto(1000,1000)
+            segments.clear()
+            score = 0
+            delay = 0.1
+
+            #update the score     
+            sc.clear()
+            sc.write("score: {}  High score: {}".format(score,high_score), align="center", font=("ds-digital", 24, "normal"))
+    time.sleep(delay)
+wn.mainloop()   
